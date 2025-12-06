@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { getSupabaseServerClient } from "@/lib/supabaseServer";
 import { HowItWorks } from "./components/HowItWorks";
 import { LandingHero } from "./components/LandingHero";
