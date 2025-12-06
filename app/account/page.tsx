@@ -46,7 +46,8 @@ export default async function AccountPage() {
       "id, entry_type, created_at, sweepstake_id, sweepstakes(id, title, prize_value_cents)",
     )
     .eq("user_id", userWithProfile.user.id)
-    .order("created_at", { ascending: false });
+    .order("created_at", { ascending: false })
+    .returns<EntryRow[]>();
 
   return (
     <main className="mx-auto flex min-h-screen max-w-5xl flex-col gap-8 px-6 py-12">
@@ -82,7 +83,7 @@ export default async function AccountPage() {
                 </tr>
               </thead>
               <tbody className="divide-y divide-white/5 text-white/80">
-                {(entries as EntryRow[]).map((entry) => (
+                {entries.map((entry) => (
                   <tr key={entry.id}>
                     <td className="px-3 py-2">
                       <div className="flex flex-col">
