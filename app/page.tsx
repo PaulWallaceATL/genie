@@ -2,7 +2,7 @@ import Link from "next/link";
 
 export default function Home() {
   return (
-    <main className="mx-auto flex min-h-screen max-w-5xl flex-col gap-12 px-6 py-16">
+    <main className="mx-auto flex min-h-screen max-w-6xl flex-col gap-12 px-6 py-16">
       <section className="flex flex-col gap-4 rounded-xl bg-white p-8 shadow-sm">
         <p className="text-sm font-semibold uppercase tracking-wide text-indigo-600">
           Genie Sweepstakes
@@ -27,6 +27,12 @@ export default function Home() {
             className="rounded-full border border-indigo-200 px-5 py-3 text-sm font-semibold text-indigo-700 transition hover:border-indigo-300 hover:bg-indigo-50"
           >
             Admin: Manage Sweepstakes
+          </Link>
+          <Link
+            href="/auth"
+            className="rounded-full border border-zinc-200 px-5 py-3 text-sm font-semibold text-zinc-800 transition hover:border-zinc-300 hover:bg-zinc-50"
+          >
+            Sign in / Sign up
           </Link>
         </div>
       </section>

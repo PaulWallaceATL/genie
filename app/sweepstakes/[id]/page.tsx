@@ -31,29 +31,40 @@ export default async function SweepstakesDetailPage({
   const supabase = await getSupabaseServerClient();
   const now = new Date().toISOString();
 
-  const { data, error } = await supabase
-    .from("sweepstakes")
-    .select(
-      "id, title, description, image_url, start_at, end_at, prize_value_cents, is_active",
-    )
-    .eq("id", params.id)
-    .maybeSingle();
+  let sweepstake: Sweepstake | null = null;
+  let loadError: string | null = null;
 
-  if (error && error.code !== "PGRST116") {
-    throw error;
+  try {
+    const { data, error } = await supabase
+      .from("sweepstakes")
+      .select(
+        "id, title, description, image_url, start_at, end_at, prize_value_cents, is_active",
+      )
+      .eq("id", params.id)
+      .maybeSingle();
+
+    if (error && error.code !== "PGRST116") {
+      throw error;
+    }
+
+    sweepstake = (data as Sweepstake) ?? null;
+  } catch (err) {
+    loadError =
+      err && typeof err === "object" && "message" in err
+        ? String((err as { message: string }).message)
+        : "Unable to load this sweepstake.";
   }
 
-  if (!data) {
+  if (loadError || !sweepstake) {
     return (
       <main className="mx-auto flex min-h-screen max-w-4xl items-center justify-center px-6">
-        <div className="rounded-lg border border-dashed border-zinc-300 bg-white p-8 text-center text-zinc-600">
-          Sweepstake not found.
+        <div className="rounded-lg border border-dashed border-red-200 bg-red-50 p-8 text-center text-red-700">
+          {loadError ?? "Sweepstake not found."}
         </div>
       </main>
     );
   }
 
-  const sweepstake = data as Sweepstake;
   const isActive =
     sweepstake.is_active &&
     sweepstake.start_at <= now &&

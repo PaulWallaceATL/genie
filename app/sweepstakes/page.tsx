@@ -31,21 +31,28 @@ export default async function SweepstakesListPage() {
   const supabase = await getSupabaseServerClient();
   const now = new Date().toISOString();
 
-  const { data, error } = await supabase
-    .from("sweepstakes")
-    .select(
-      "id, title, description, image_url, start_at, end_at, prize_value_cents",
-    )
-    .eq("is_active", true)
-    .lte("start_at", now)
-    .gte("end_at", now)
-    .order("end_at", { ascending: true });
+  let sweepstakes: Sweepstake[] = [];
+  let loadError: string | null = null;
 
-  if (error) {
-    throw error;
+  try {
+    const { data, error } = await supabase
+      .from("sweepstakes")
+      .select(
+        "id, title, description, image_url, start_at, end_at, prize_value_cents",
+      )
+      .eq("is_active", true)
+      .lte("start_at", now)
+      .gte("end_at", now)
+      .order("end_at", { ascending: true });
+
+    if (error) throw error;
+    sweepstakes = data ?? [];
+  } catch (err) {
+    loadError =
+      err && typeof err === "object" && "message" in err
+        ? String((err as { message: string }).message)
+        : "Unable to load sweepstakes.";
   }
-
-  const sweepstakes = data ?? [];
 
   return (
     <main className="mx-auto flex min-h-screen max-w-6xl flex-col gap-6 px-6 py-10">
@@ -57,7 +64,11 @@ export default async function SweepstakesListPage() {
         </p>
       </div>
 
-      {sweepstakes.length === 0 ? (
+      {loadError ? (
+        <div className="rounded-lg border border-red-200 bg-red-50 p-6 text-sm text-red-700">
+          {loadError}
+        </div>
+      ) : sweepstakes.length === 0 ? (
         <div className="rounded-lg border border-dashed border-zinc-300 bg-white p-6 text-sm text-zinc-600">
           No active sweepstakes right now. Check back soon!
         </div>
