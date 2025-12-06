@@ -2,6 +2,7 @@ import { revalidatePath } from "next/cache";
 import { getCurrentUserWithProfile } from "@/lib/profile";
 import { getSupabaseServerClient } from "@/lib/supabaseServer";
 import { SweepstakeAdminTable } from "./SweepstakeAdminTable";
+import { SectionHeader } from "@/app/components/ui/SectionHeader";
 
 const ADMIN_EMAILS = ["paul@antimatterai.com"];
 
@@ -308,15 +309,31 @@ export default async function AdminSweepstakesPage() {
   }
 
   return (
-    <main className="mx-auto flex min-h-screen max-w-5xl flex-col gap-8 px-6 py-10">
-      <div className="flex flex-col gap-3 rounded-3xl border border-white/10 bg-white/5 p-8">
-        <p className="badge w-fit">Admin</p>
-        <h1 className="text-3xl font-semibold text-white">Manage Sweepstakes</h1>
-        <p className="text-sm text-white/70">Create new sweepstakes and view existing ones.</p>
+    <main className="mx-auto flex min-h-screen max-w-6xl flex-col gap-8 px-6 py-10">
+      <div className="relative overflow-hidden rounded-3xl border border-white/10 bg-white/5 p-8 shadow-2xl">
+        <div className="pointer-events-none absolute inset-0 opacity-60">
+          <div className="absolute -left-14 top-0 h-44 w-44 rounded-full bg-[#2f6fde]/25 blur-[110px]" />
+          <div className="absolute right-0 bottom-0 h-44 w-60 rounded-full bg-[#f7c552]/22 blur-[120px]" />
+        </div>
+        <div className="relative flex flex-col gap-3">
+          <p className="badge w-fit">Admin</p>
+          <h1 className="text-3xl font-semibold text-white">Sweepstakes control center</h1>
+          <p className="text-sm text-white/70">
+            Create, close, or pick winners. Entries and roles stay server-trusted.
+          </p>
+          <div className="flex flex-wrap gap-2 text-sm text-white/70">
+            <span className="pill bg-white/5">Active draws: {(sweepstakes ?? []).filter((s) => s.is_active).length}</span>
+            <span className="pill bg-white/5">Total raffles: {(sweepstakes ?? []).length}</span>
+          </div>
+        </div>
       </div>
 
       <section className="card border border-white/10 bg-white/5 p-6 shadow-sm">
-        <h2 className="text-lg font-semibold text-white">Create Sweepstake</h2>
+        <SectionHeader
+          eyebrow="Create"
+          title="Create sweepstake"
+          description="Launch a new giveaway with title, dates, and optional prize value."
+        />
         <form action={seedSampleSweepstakes} className="mt-2">
           <button type="submit" className="btn-ghost text-xs px-3 py-2">
             Generate sample raffles
@@ -409,7 +426,17 @@ export default async function AdminSweepstakesPage() {
       </section>
 
       <section className="card border border-white/10 bg-white/5 p-6 shadow-sm">
-        <h2 className="text-lg font-semibold text-white">Existing</h2>
+        <SectionHeader
+          eyebrow="Overview"
+          title="All sweepstakes"
+          description="Manage status, close raffles, or pick winners."
+          actions={
+            <input
+              placeholder="Search by title..."
+              className="w-56 rounded-xl border border-white/15 bg-white/5 px-3 py-2 text-sm text-white placeholder:text-white/50"
+            />
+          }
+        />
         <SweepstakeAdminTable
           sweepstakes={sweepstakes ?? []}
           onPickWinner={selectWinner}

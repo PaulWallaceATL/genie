@@ -1,6 +1,7 @@
 import { getCurrentUserWithProfile } from "@/lib/profile";
 import { getSupabaseServerClient } from "@/lib/supabaseServer";
 import Link from "next/link";
+import { SectionHeader } from "@/app/components/ui/SectionHeader";
 
 const ADMIN_EMAILS = ["paul@antimatterai.com"];
 
@@ -75,8 +76,27 @@ export default async function AdminEntriesPage() {
       </div>
 
       <section className="card border border-white/10 bg-white/5 p-6 shadow-xl">
+        <SectionHeader
+          eyebrow="Entries"
+          title="Latest 200 entries"
+          description="Track paid, earned, and free entries. Add filters when wiring search."
+          actions={
+            <div className="flex flex-wrap gap-2">
+              <input
+                placeholder="Search by user/email..."
+                className="w-56 rounded-xl border border-white/15 bg-white/5 px-3 py-2 text-sm text-white placeholder:text-white/50"
+              />
+              <select className="rounded-xl border border-white/15 bg-white/5 px-3 py-2 text-sm text-white">
+                <option value="">All types</option>
+                <option value="paid">Paid</option>
+                <option value="earned">Earned</option>
+                <option value="free">Free</option>
+              </select>
+            </div>
+          }
+        />
         {entries && entries.length > 0 ? (
-          <div className="overflow-x-auto rounded-2xl border border-white/5">
+          <div className="mt-4 overflow-x-auto rounded-2xl border border-white/5">
             <table className="min-w-full text-left text-sm">
               <thead className="bg-white/5 text-xs uppercase text-white/60">
                 <tr>
