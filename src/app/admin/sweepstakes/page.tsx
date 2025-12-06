@@ -53,7 +53,7 @@ async function createSweepstake(formData: FormData) {
     throw new Error("Invalid prize value.");
   }
 
-  const supabase = getSupabaseServerClient();
+  const supabase = await getSupabaseServerClient();
 
   const { error: insertError } = await supabase.from("sweepstakes").insert({
     title,
