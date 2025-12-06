@@ -1,7 +1,7 @@
 import { getCurrentUserWithProfile } from "@/lib/profile";
 import { getSupabaseServerClient } from "@/lib/supabaseServer";
 import Link from "next/link";
-import { SectionHeader } from "@/app/components/ui/SectionHeader";
+import { SectionHeader } from "../components/ui/SectionHeader";
 
 const ADMIN_EMAILS = ["paul@antimatterai.com"];
 
