@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { getCurrentUserWithProfile } from "@/lib/profile";
 import { getSupabaseServerClient } from "@/lib/supabaseServer";
-import { CountdownTimer } from "@/app/components/CountdownTimer";
+import { CountdownTimer } from "@/components/CountdownTimer";
 import { EntryActions } from "./EntryActions";
 
 type Sweepstake = {
