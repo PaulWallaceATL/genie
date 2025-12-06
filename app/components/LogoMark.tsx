@@ -14,10 +14,10 @@ export function LogoMark({ size = 28, className }: LogoMarkProps) {
       xmlns="http://www.w3.org/2000/svg"
     >
       <defs>
-        <linearGradient id="lampGradient" x1="10" y1="8" x2="54" y2="54" gradientUnits="userSpaceOnUse">
-          <stop stopColor="#8C52FF" />
-          <stop offset="0.5" stopColor="#C49BFF" />
-          <stop offset="1" stopColor="#F7C552" />
+        <linearGradient id="lampGradient" x1="6" y1="10" x2="58" y2="52" gradientUnits="userSpaceOnUse">
+          <stop stopColor="#F7C552" />
+          <stop offset="0.4" stopColor="#D7A8FF" />
+          <stop offset="1" stopColor="#5C2BBA" />
         </linearGradient>
         <filter id="glow" x="-50%" y="-50%" width="200%" height="200%" colorInterpolationFilters="sRGB">
           <feGaussianBlur stdDeviation="3" result="blur" />
@@ -28,35 +28,42 @@ export function LogoMark({ size = 28, className }: LogoMarkProps) {
         </filter>
       </defs>
       <path
-        d="M10 34c0 4.2 3.5 6.5 7.2 7.4 5.3 1.4 11.7 1.6 17.6 1.6 9.6 0 17.8-2 17.8-7.5 0-2.7-1.9-4.9-5.1-6.3-1.3-.6-1.7-2.2-.8-3.3 1.4-1.7 1.9-3.3 1.9-4.6C48.6 19 42 15 32.6 15c-7.9 0-13.8 3.2-16.6 7.9C13.6 24 12 25.2 12 27c0 1.4.9 2.6 2.3 3.1-2.9 1-4.3 2.4-4.3 3.9Z"
+        d="M9 35.2c0 3.8 3.5 6.7 8.4 8 5.6 1.4 12.2 1.6 17.8 1.6 10.4 0 18.8-2.6 18.8-8 0-2.6-1.9-5-5.1-6.6-1.3-.6-1.6-2.2-.7-3.2 1.8-2 2.6-4.3 2.6-6.6C50.8 14.8 42 10 31 10c-9 0-15.7 4-18.8 10-2.4.5-4.2 2.2-4.2 4.4 0 1.7 1 3.2 2.8 4-3.5 1.2-5.8 3.4-5.8 6.8Z"
         fill="url(#lampGradient)"
         filter="url(#glow)"
-        opacity="0.95"
+        opacity="0.98"
       />
       <path
-        d="M45.5 27.4c3.2 1.8 6.5 2.4 8.5 2.5.8 0 1.3.9.8 1.6-1.8 2.6-5.1 4.6-9.9 3.8"
-        stroke="#F7C552"
+        d="M47 26.8c3.8 1.7 7.9 2.3 10.8 2.4 1 0 1.6 1.1 1 2-2 2.7-5.4 4.7-10.5 4"
+        stroke="#F7D785"
         strokeWidth="2"
         strokeLinecap="round"
         opacity="0.9"
       />
       <path
-        d="M21 44c0 2.9 4.2 5.2 9.4 5.2S39.8 47 39.8 44"
+        d="M23 44.8c0 3.3 4.6 5.8 10.2 5.8S43.4 48 43.4 44.8"
         stroke="url(#lampGradient)"
         strokeWidth="2"
         strokeLinecap="round"
         opacity="0.85"
       />
       <path
-        d="M28 20c0 2.2 3.4 4 7.6 4s7.6-1.8 7.6-4"
-        stroke="#F7E6C4"
+        d="M32 16.8c0 2.8 4 5 8.6 5s8.6-2.2 8.6-5"
+        stroke="#F9EFD2"
         strokeWidth="1.6"
         strokeLinecap="round"
         opacity="0.7"
       />
-      <circle cx="20" cy="20" r="2" fill="#C49BFF" opacity="0.8" />
-      <circle cx="44" cy="17" r="2.6" fill="#F7C552" opacity="0.9" />
-      <circle cx="32" cy="12.5" r="1.8" fill="#8C52FF" opacity="0.7" />
+      <path
+        d="M39 15c3 1.4 4.6 4.3 4.6 6.8 0 3.2-1.6 5.8-4.6 7.6"
+        stroke="#D7A8FF"
+        strokeWidth="1.8"
+        strokeLinecap="round"
+        opacity="0.9"
+      />
+      <circle cx="19.5" cy="22" r="2.2" fill="#C49BFF" opacity="0.85" />
+      <circle cx="45.5" cy="18.5" r="2.6" fill="#F7C552" opacity="0.9" />
+      <circle cx="30" cy="12.5" r="1.9" fill="#5C2BBA" opacity="0.75" />
     </svg>
   );
 }

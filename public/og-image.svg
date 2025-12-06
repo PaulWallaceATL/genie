@@ -2,30 +2,30 @@
   <defs>
     <linearGradient id="bg" x1="0" y1="0" x2="1200" y2="630" gradientUnits="userSpaceOnUse">
       <stop stop-color="#0A0616"/>
-      <stop offset="0.45" stop-color="#1B0F33"/>
-      <stop offset="1" stop-color="#0A0514"/>
+      <stop offset="0.45" stop-color="#1D0F36"/>
+      <stop offset="1" stop-color="#0B0516"/>
     </linearGradient>
     <linearGradient id="ring" x1="260" y1="150" x2="880" y2="520" gradientUnits="userSpaceOnUse">
-      <stop stop-color="#8C52FF"/>
-      <stop offset="0.55" stop-color="#C49BFF"/>
-      <stop offset="1" stop-color="#F7C552"/>
+      <stop stop-color="#F7C552"/>
+      <stop offset="0.45" stop-color="#D7A8FF"/>
+      <stop offset="1" stop-color="#5C2BBA"/>
     </linearGradient>
     <radialGradient id="glow" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(320 180) rotate(90) scale(260 320)">
-      <stop stop-color="#F7C552" stop-opacity="0.3"/>
-      <stop offset="1" stop-color="#8C52FF" stop-opacity="0"/>
+      <stop stop-color="#F7C552" stop-opacity="0.32"/>
+      <stop offset="1" stop-color="#5C2BBA" stop-opacity="0"/>
     </radialGradient>
   </defs>
   <rect width="1200" height="630" fill="url(#bg)"/>
   <circle cx="260" cy="170" r="220" fill="url(#glow)"/>
   <circle cx="930" cy="120" r="180" fill="url(#glow)" opacity="0.45"/>
-  <rect x="120" y="120" width="960" height="390" rx="32" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.12)"/>
+  <rect x="120" y="120" width="960" height="390" rx="32" fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.12)"/>
   <g filter="url(#shadow)">
-    <path d="M860 286c0 72.3-83.3 131-186 131-32.6 0-63.6-6.1-89.7-16.8-11.7-4.8-17.3-17.5-13.5-29.6 3.7-12 14.8-19.7 27.3-19.7 10.2 0 19.3 4.2 25.7 10.8 17.2-42.4 59.3-74.7 110.2-74.7 30.9 0 56.8 8.6 66 21Z" fill="url(#ring)" opacity="0.95"/>
-    <path d="M650 433c0 18.4 22 32.7 46.5 32.7s46.5-14.3 46.5-32.7" stroke="url(#ring)" stroke-width="5" stroke-linecap="round" opacity="0.8"/>
-    <path d="M803 238c10 6 15 13.4 15 24 0 20.6-23.4 36.6-55.7 41.7" stroke="#F7C552" stroke-width="4" stroke-linecap="round" opacity="0.85"/>
+    <path d="M860 286c0 72.3-83.3 131-186 131-32.6 0-63.6-6.1-89.7-16.8-11.7-4.8-17.3-17.5-13.5-29.6 3.7-12 14.8-19.7 27.3-19.7 10.2 0 19.3 4.2 25.7 10.8 17.2-42.4 59.3-74.7 110.2-74.7 30.9 0 56.8 8.6 66 21Z" fill="url(#ring)" opacity="0.97"/>
+    <path d="M650 433c0 18.4 22 32.7 46.5 32.7s46.5-14.3 46.5-32.7" stroke="url(#ring)" stroke-width="5" stroke-linecap="round" opacity="0.82"/>
+    <path d="M803 238c10 6 15 13.4 15 24 0 20.6-23.4 36.6-55.7 41.7" stroke="#F7C552" stroke-width="4" stroke-linecap="round" opacity="0.88"/>
     <circle cx="803" cy="218" r="10" fill="#F7C552" opacity="0.9"/>
-    <circle cx="606" cy="232" r="6" fill="#C49BFF" opacity="0.82"/>
-    <circle cx="656" cy="210" r="5" fill="#8C52FF" opacity="0.7"/>
+    <circle cx="606" cy="232" r="6" fill="#D7A8FF" opacity="0.85"/>
+    <circle cx="656" cy="210" r="5" fill="#5C2BBA" opacity="0.7"/>
   </g>
   <filter id="shadow" x="410" y="160" width="480" height="330" color-interpolation-filters="sRGB">
     <feGaussianBlur in="SourceGraphic" stdDeviation="6" result="blur"/>
@@ -34,12 +34,12 @@
       <feMergeNode in="SourceGraphic"/>
     </feMerge>
   </filter>
-  <text x="180" y="230" fill="#C8B7E8" font-family="Plus Jakarta Sans, 'Inter', system-ui" font-size="22" letter-spacing="0.08em">GENIE SWEEPSTAKES</text>
+  <text x="180" y="230" fill="#D7A8FF" font-family="Plus Jakarta Sans, 'Inter', system-ui" font-size="22" letter-spacing="0.08em">GENIE SWEEPSTAKES</text>
   <text x="180" y="295" fill="#F7F3FF" font-family="Space Grotesk, 'Plus Jakarta Sans', system-ui" font-size="54" font-weight="700">Summon luck with Genie Coins</text>
-  <text x="180" y="345" fill="#E3D7F8" font-family="Plus Jakarta Sans, 'Inter', system-ui" font-size="22">Enter verified sweepstakes with paid, earned, or free AMOE entries.</text>
+  <text x="180" y="345" fill="#EADCFB" font-family="Plus Jakarta Sans, 'Inter', system-ui" font-size="22">Enter verified sweepstakes with paid, earned, or free AMOE entries.</text>
   <rect x="180" y="380" width="220" height="64" rx="32" fill="url(#ring)"/>
-  <text x="205" y="422" fill="#1B0F33" font-family="Plus Jakarta Sans, 'Inter', system-ui" font-size="22" font-weight="800">View Sweepstakes</text>
-  <rect x="420" y="380" width="260" height="64" rx="32" fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.16)"/>
+  <text x="205" y="422" fill="#1D0F36" font-family="Plus Jakarta Sans, 'Inter', system-ui" font-size="22" font-weight="800">View Sweepstakes</text>
+  <rect x="420" y="380" width="260" height="64" rx="32" fill="rgba(255,255,255,0.07)" stroke="rgba(255,255,255,0.16)"/>
   <text x="450" y="422" fill="#F7F3FF" font-family="Plus Jakarta Sans, 'Inter', system-ui" font-size="22" font-weight="700">Earn Coins, Play Fair</text>
 </svg>
 
