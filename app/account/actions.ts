@@ -208,4 +208,28 @@ export async function watchAdDemoAction(): Promise<WatchAdResult> {
   return { newBalance };
 }
 
+export async function buyCoinsDemoAction(): Promise<WatchAdResult> {
+  const COINS_TO_GRANT = 100;
+  const userWithProfile = await getCurrentUserWithProfile();
+  if (!userWithProfile) {
+    throw new Error("Not authenticated");
+  }
+
+  const { user, profile } = userWithProfile;
+  const supabase = await getSupabaseServerClient();
+
+  const newBalance = (profile.coin_balance ?? 0) + COINS_TO_GRANT;
+
+  const { error: updateError } = await supabase
+    .from("profiles")
+    .update({ coin_balance: newBalance })
+    .eq("auth_user_id", user.id);
+
+  if (updateError) {
+    throw updateError;
+  }
+
+  return { newBalance };
+}
+
 
