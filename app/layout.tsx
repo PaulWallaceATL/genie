@@ -87,6 +87,9 @@ export default async function RootLayout({
               <Link href="/sweepstakes" className="pill hover:border-white/30 hover:bg-white/10">
                 Sweepstakes
               </Link>
+              <Link href="/account" className="pill hover:border-white/30 hover:bg-white/10">
+                My account
+              </Link>
               <Link href="/admin/sweepstakes" className="pill hover:border-white/30 hover:bg-white/10">
                 Admin
               </Link>

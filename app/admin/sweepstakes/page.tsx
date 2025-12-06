@@ -72,6 +72,68 @@ async function createSweepstake(formData: FormData) {
   revalidatePath("/admin/sweepstakes");
 }
 
+async function seedSampleSweepstakes() {
+  "use server";
+
+  const userWithProfile = await getCurrentUserWithProfile();
+  if (!userWithProfile || !isAdmin(userWithProfile.user.email)) {
+    throw new Error("Forbidden");
+  }
+
+  const supabase = await getSupabaseServerClient();
+  const now = new Date();
+
+  const samples = [
+    {
+      title: "Pharaoh's Gold Chest",
+      description: "Win a gilded bundle inspired by Cairo nights. Coins accepted, AMOE available.",
+      image_url:
+        "https://images.unsplash.com/photo-1505761671935-60b3a7427bad?auto=format&fit=crop&w=900&q=80",
+      prize_value_cents: 25000,
+      start_at: new Date(now).toISOString(),
+      end_at: new Date(now.getTime() + 5 * 24 * 60 * 60 * 1000).toISOString(),
+      is_active: true,
+    },
+    {
+      title: "Blue Genie Getaway",
+      description: "Travel bundle with a touch of sapphire magic. Daily free entry included.",
+      image_url:
+        "https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=900&q=80",
+      prize_value_cents: 120000,
+      start_at: new Date(now).toISOString(),
+      end_at: new Date(now.getTime() + 10 * 24 * 60 * 60 * 1000).toISOString(),
+      is_active: true,
+    },
+    {
+      title: "Lamp of Luck",
+      description: "Limited-edition artisan lamp plus bonus merch. Enter with coins or AMOE.",
+      image_url:
+        "https://images.unsplash.com/photo-1460353581641-37baddab0fa2?auto=format&fit=crop&w=900&q=80",
+      prize_value_cents: 8500,
+      start_at: new Date(now).toISOString(),
+      end_at: new Date(now.getTime() + 3 * 24 * 60 * 60 * 1000).toISOString(),
+      is_active: true,
+    },
+  ];
+
+  // Avoid duplicating by title.
+  const { data: existing } = await supabase.from("sweepstakes").select("title");
+  const existingTitles = new Set((existing ?? []).map((s) => s.title));
+  const toInsert = samples.filter((s) => !existingTitles.has(s.title));
+
+  if (toInsert.length === 0) {
+    return;
+  }
+
+  const { error } = await supabase.from("sweepstakes").insert(toInsert);
+  if (error) {
+    throw error;
+  }
+
+  revalidatePath("/admin/sweepstakes");
+  revalidatePath("/sweepstakes");
+}
+
 export default async function AdminSweepstakesPage() {
   const userWithProfile = await getCurrentUserWithProfile();
   const supabase = await getSupabaseServerClient();
@@ -110,6 +172,11 @@ export default async function AdminSweepstakesPage() {
 
       <section className="card border border-white/10 bg-white/5 p-6 shadow-sm">
         <h2 className="text-lg font-semibold text-white">Create Sweepstake</h2>
+        <form action={seedSampleSweepstakes} className="mt-2">
+          <button type="submit" className="btn-ghost text-xs px-3 py-2">
+            Generate sample raffles
+          </button>
+        </form>
         <form action={createSweepstake} className="mt-4 grid gap-4 md:grid-cols-2">
           <div className="flex flex-col gap-2">
             <label className="text-sm font-medium text-white/80">Title</label>
