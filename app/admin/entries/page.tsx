@@ -52,27 +52,33 @@ export default async function AdminEntriesPage() {
 
   return (
     <main className="mx-auto flex min-h-screen max-w-6xl flex-col gap-8 px-6 py-12">
-      <div className="flex flex-col gap-3 rounded-3xl border border-white/10 bg-white/5 p-8">
-        <p className="badge w-fit">Admin</p>
-        <h1 className="text-3xl font-semibold text-white">Entries tracker</h1>
-        <p className="text-sm text-white/70">
-          All entries across users and sweepstakes. Most recent first (showing latest 200).
-        </p>
-        <div className="flex gap-3 text-sm">
-          <Link href="/admin/sweepstakes" className="btn-ghost text-sm">
-            Manage sweepstakes
-          </Link>
-          <Link href="/sweepstakes" className="pill text-sm">
-            View live page
-          </Link>
+      <div className="relative overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-r from-[#0b1a34] via-[#0a1224] to-[#0b1a34] p-8">
+        <div className="pointer-events-none absolute inset-0 opacity-70">
+          <div className="absolute -left-20 top-0 h-48 w-48 rounded-full bg-[#2f6fde]/25 blur-[120px]" />
+          <div className="absolute right-0 top-10 h-40 w-40 rounded-full bg-[#f7c552]/20 blur-[110px]" />
+        </div>
+        <div className="relative flex flex-col gap-3">
+          <p className="badge w-fit">Admin</p>
+          <h1 className="text-3xl font-semibold text-white">Entries tracker</h1>
+          <p className="text-sm text-white/70">
+            All entries across users and sweepstakes. Most recent first (latest 200).
+          </p>
+          <div className="flex flex-wrap gap-3 text-sm">
+            <Link href="/admin/sweepstakes" className="btn-ghost text-sm">
+              Manage sweepstakes
+            </Link>
+            <Link href="/sweepstakes" className="pill text-sm">
+              View live page
+            </Link>
+          </div>
         </div>
       </div>
 
-      <section className="card border border-white/10 bg-white/5 p-6">
+      <section className="card border border-white/10 bg-white/5 p-6 shadow-xl">
         {entries && entries.length > 0 ? (
-          <div className="overflow-x-auto">
+          <div className="overflow-x-auto rounded-2xl border border-white/5">
             <table className="min-w-full text-left text-sm">
-              <thead className="text-xs uppercase text-white/50">
+              <thead className="bg-white/5 text-xs uppercase text-white/60">
                 <tr>
                   <th className="px-3 py-2">User</th>
                   <th className="px-3 py-2">Sweepstake</th>
@@ -83,7 +89,7 @@ export default async function AdminEntriesPage() {
               </thead>
               <tbody className="divide-y divide-white/5 text-white/80">
                 {entries.map((entry) => (
-                  <tr key={entry.id}>
+                  <tr key={entry.id} className="transition hover:bg-white/5">
                     <td className="px-3 py-2">
                       <div className="flex flex-col">
                         <span>{entry.profiles?.email ?? "Unknown"}</span>

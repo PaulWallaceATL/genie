@@ -6,6 +6,7 @@ import { getCurrentUserWithProfile } from "@/lib/profile";
 import { signOutAction } from "./auth/actions";
 import { LogoMark } from "./components/LogoMark";
 import { PageLoader } from "./components/PageLoader";
+import { PageTransitions } from "./components/PageTransitions";
 
 const jakarta = Plus_Jakarta_Sans({
   variable: "--font-jakarta",
@@ -119,7 +120,7 @@ export default async function RootLayout({
             <div className="absolute -right-10 top-10 h-56 w-56 rounded-full bg-[#f7c552]/20 blur-[120px]" />
             <div className="absolute bottom-0 left-1/2 h-52 w-72 -translate-x-1/2 rounded-full bg-[#0b1a34]/55 blur-[150px]" />
           </div>
-          {children}
+          <PageTransitions>{children}</PageTransitions>
         </div>
       </body>
     </html>

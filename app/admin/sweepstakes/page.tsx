@@ -1,6 +1,7 @@
 import { revalidatePath } from "next/cache";
 import { getCurrentUserWithProfile } from "@/lib/profile";
 import { getSupabaseServerClient } from "@/lib/supabaseServer";
+import { SweepstakeAdminTable } from "./SweepstakeAdminTable";
 
 const ADMIN_EMAILS = ["paul@antimatterai.com"];
 
@@ -174,6 +175,104 @@ async function seedSampleSweepstakes() {
   revalidatePath("/sweepstakes");
 }
 
+type ActionState = { status: "idle" | "success" | "error"; message?: string };
+
+async function closeSweepstake(formData: FormData): Promise<ActionState> {
+  "use server";
+
+  const sweepstakeId = formData.get("sweepstakeId");
+  if (typeof sweepstakeId !== "string" || !sweepstakeId) {
+    return { status: "error", message: "Invalid sweepstake id." };
+  }
+
+  const userWithProfile = await getCurrentUserWithProfile();
+  if (!userWithProfile || !isAdmin(userWithProfile.user.email)) {
+    return { status: "error", message: "Forbidden" };
+  }
+
+  const supabase = await getSupabaseServerClient();
+
+  const { error } = await supabase.from("sweepstakes").update({ is_active: false }).eq("id", sweepstakeId);
+  if (error) {
+    return { status: "error", message: error.message ?? "Unable to close sweepstake" };
+  }
+
+  revalidatePath("/admin/sweepstakes");
+  revalidatePath("/sweepstakes");
+  return { status: "success", message: "Sweepstake closed." };
+}
+
+async function selectWinner(formData: FormData): Promise<ActionState> {
+  "use server";
+
+  const sweepstakeId = formData.get("sweepstakeId");
+  if (typeof sweepstakeId !== "string" || !sweepstakeId) {
+    return { status: "error", message: "Invalid sweepstake id." };
+  }
+
+  const userWithProfile = await getCurrentUserWithProfile();
+  if (!userWithProfile || !isAdmin(userWithProfile.user.email)) {
+    return { status: "error", message: "Forbidden" };
+  }
+
+  const supabase = await getSupabaseServerClient();
+
+  const { data: entries, error } = await supabase
+    .from("entries")
+    .select("id, user_id, profiles:profiles(email)")
+    .eq("sweepstake_id", sweepstakeId);
+
+  if (error) {
+    return { status: "error", message: error.message ?? "Failed to load entries." };
+  }
+
+  if (!entries || entries.length === 0) {
+    return { status: "error", message: "No entries to select from." };
+  }
+
+  const random = entries[Math.floor(Math.random() * entries.length)];
+  const winnerEmail = random.profiles?.email ?? "Unknown";
+
+  // Attempt to persist winner metadata if columns exist; otherwise just deactivate.
+  const candidateUpdate: Record<string, unknown> = {
+    is_active: false,
+    winner_entry_id: random.id,
+    winner_user_id: random.user_id,
+    winner_selected_at: new Date().toISOString(),
+  };
+
+  let updateFailed = false;
+  const { error: updateError } = await supabase
+    .from("sweepstakes")
+    .update(candidateUpdate)
+    .eq("id", sweepstakeId);
+
+  if (updateError) {
+    // Fallback to minimal update if the schema lacks the winner columns.
+    if (updateError.code === "42703") {
+      updateFailed = true;
+    } else {
+      return { status: "error", message: updateError.message ?? "Unable to update sweepstake." };
+    }
+  }
+
+  if (updateFailed) {
+    const { error: minimalError } = await supabase
+      .from("sweepstakes")
+      .update({ is_active: false })
+      .eq("id", sweepstakeId);
+    if (minimalError) {
+      return { status: "error", message: minimalError.message ?? "Unable to close sweepstake." };
+    }
+  }
+
+  revalidatePath("/admin/sweepstakes");
+  revalidatePath("/admin/entries");
+  revalidatePath("/sweepstakes");
+
+  return { status: "success", message: `Winner: ${winnerEmail}` };
+}
+
 export default async function AdminSweepstakesPage() {
   const userWithProfile = await getCurrentUserWithProfile();
   const supabase = await getSupabaseServerClient();
@@ -195,7 +294,7 @@ export default async function AdminSweepstakesPage() {
 
   const { data: sweepstakes, error } = await supabase
     .from("sweepstakes")
-    .select("id, title, is_active, start_at, end_at")
+    .select("id, title, is_active, start_at, end_at, winner_user_id")
     .order("start_at", { ascending: false });
 
   if (error) {
@@ -305,53 +404,11 @@ export default async function AdminSweepstakesPage() {
 
       <section className="card border border-white/10 bg-white/5 p-6 shadow-sm">
         <h2 className="text-lg font-semibold text-white">Existing</h2>
-        <div className="mt-4 overflow-x-auto">
-          <table className="min-w-full text-left text-sm">
-            <thead className="text-xs uppercase text-white/50">
-              <tr>
-                <th className="px-3 py-2">ID</th>
-                <th className="px-3 py-2">Title</th>
-                <th className="px-3 py-2">Active</th>
-                <th className="px-3 py-2">Start</th>
-                <th className="px-3 py-2">End</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-white/5 text-white/80">
-              {(sweepstakes ?? []).map((s) => (
-                <tr key={s.id}>
-                  <td className="px-3 py-2 font-mono text-[11px] text-white/50">
-                    {s.id}
-                  </td>
-                  <td className="px-3 py-2">{s.title}</td>
-                  <td className="px-3 py-2">
-                    <span
-                      className={`rounded-full px-2 py-1 text-xs font-semibold ${
-                        s.is_active
-                          ? "bg-green-500/15 text-green-100"
-                          : "bg-white/5 text-white/60"
-                      }`}
-                    >
-                      {s.is_active ? "Active" : "Inactive"}
-                    </span>
-                  </td>
-                  <td className="px-3 py-2">
-                    {new Date(s.start_at).toLocaleString()}
-                  </td>
-                  <td className="px-3 py-2">
-                    {new Date(s.end_at).toLocaleString()}
-                  </td>
-                </tr>
-              ))}
-              {(sweepstakes ?? []).length === 0 && (
-                <tr>
-                  <td className="px-3 py-4 text-sm text-white/60" colSpan={5}>
-                    No sweepstakes created yet.
-                  </td>
-                </tr>
-              )}
-            </tbody>
-          </table>
-        </div>
+        <SweepstakeAdminTable
+          sweepstakes={sweepstakes ?? []}
+          onPickWinner={selectWinner}
+          onClose={closeSweepstake}
+        />
       </section>
     </main>
   );

@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { getSupabaseServerClient } from "@/lib/supabaseServer";
+import { SweepstakeCards } from "./SweepstakeCards";
 
 type Sweepstake = {
   id: string;
@@ -25,6 +26,23 @@ function truncate(text: string | null, length = 140) {
   if (!text) return "";
   if (text.length <= length) return text;
   return `${text.slice(0, length)}…`;
+}
+
+function timeLeft(endAt: string) {
+  const diff = new Date(endAt).getTime() - Date.now();
+  if (diff <= 0) return "Closed";
+  const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+  const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+  return days > 0 ? `${days}d ${hours}h left` : `${hours}h left`;
+}
+
+function progress(startAt: string, endAt: string) {
+  const start = new Date(startAt).getTime();
+  const end = new Date(endAt).getTime();
+  const now = Date.now();
+  if (Number.isNaN(start) || Number.isNaN(end) || start >= end) return 0;
+  const pct = (now - start) / (end - start);
+  return Math.min(1, Math.max(0, pct));
 }
 
 export default async function SweepstakesListPage() {
@@ -56,28 +74,46 @@ export default async function SweepstakesListPage() {
 
   return (
     <main className="mx-auto flex min-h-screen max-w-6xl flex-col gap-8 px-6 py-12">
-      <div className="hero-grid relative overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-r from-[#0b1a34] via-[#0a1224] to-[#0b182e] p-8">
+      <div className="hero-grid relative overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-r from-[#0b1a34] via-[#0a1224] to-[#0b182e] p-10 shadow-2xl">
         <div className="absolute inset-0 pointer-events-none">
           <div className="absolute left-8 top-6 h-32 w-32 rounded-full bg-[#f7c552]/20 blur-[90px]" />
           <div className="absolute right-4 top-0 h-40 w-40 rounded-full bg-[#2f6fde]/22 blur-[110px]" />
           <div className="absolute bottom-0 left-1/2 h-32 w-80 -translate-x-1/2 rounded-full bg-[#0b1a34]/60 blur-[120px]" />
           <div className="absolute inset-0 grid-dots opacity-40" />
         </div>
-        <div className="relative flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
-          <div className="space-y-2">
+        <div className="relative grid gap-6 md:grid-cols-[1.4fr_0.6fr] md:items-center">
+          <div className="space-y-3">
             <p className="badge w-fit">Live draws</p>
-            <h1 className="text-3xl font-semibold text-white">Active Sweepstakes</h1>
-            <p className="text-sm text-white/70">
-              Enter with Genie Coins or claim the daily free Alternate Method of Entry (AMOE).
+            <h1 className="text-4xl font-semibold text-white">Active sweepstakes</h1>
+            <p className="max-w-2xl text-sm text-white/70">
+              Earn or buy Genie Coins, drop paid entries, or claim the daily AMOE. All logic is enforced
+              server-side for a trusted demo.
             </p>
+            <div className="flex flex-wrap gap-3">
+              <Link href="/auth" className="btn-primary text-sm">
+                Check my balance
+              </Link>
+              <Link href="/account" className="pill text-sm">
+                View profile & entries
+              </Link>
+            </div>
           </div>
-          <div className="flex gap-3">
-            <Link href="/auth" className="btn-ghost text-sm">
-              Check my balance
-            </Link>
-            <Link href="/account" className="pill text-sm">
-              My entries
-            </Link>
+          <div className="relative overflow-hidden rounded-2xl border border-white/10 bg-white/5 p-5">
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(47,111,222,0.2),transparent_35%),radial-gradient(circle_at_80%_60%,rgba(247,197,82,0.25),transparent_40%)] opacity-80" />
+            <div className="relative flex items-center justify-between">
+              <div>
+                <p className="text-xs uppercase tracking-[0.2em] text-white/60">Demo ledger</p>
+                <p className="text-xl font-semibold text-white">Coins + Entries</p>
+                <p className="mt-1 text-sm text-white/70">
+                  Stripe and rewarded ads are mocked—balances jump instantly.
+                </p>
+              </div>
+              <div className="rounded-xl bg-white/10 px-4 py-3 text-right ring-1 ring-white/10">
+                <p className="text-xs uppercase tracking-[0.25em] text-white/60">AMOE</p>
+                <p className="text-lg font-semibold text-white">1 free / day</p>
+                <p className="text-xs text-white/60">Per sweepstake</p>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -91,49 +127,7 @@ export default async function SweepstakesListPage() {
           No active sweepstakes right now. Check back soon.
         </div>
       ) : (
-        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-          {sweepstakes.map((item) => (
-            <article
-              key={item.id}
-              className="card flex flex-col gap-3 border border-white/10 p-5 transition duration-200 hover:-translate-y-1 hover:border-white/20 hover:shadow-xl"
-            >
-              {item.image_url ? (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img
-                  src={item.image_url}
-                  alt={item.title}
-                  className="h-40 w-full rounded-lg object-cover ring-1 ring-white/10"
-                />
-              ) : (
-                <div className="flex h-40 w-full items-center justify-center rounded-lg border border-dashed border-white/15 bg-white/5 text-sm text-white/60">
-                  Image coming soon
-                </div>
-              )}
-              <div className="flex flex-1 flex-col gap-2">
-                <div className="flex items-start justify-between gap-2">
-                  <h2 className="text-lg font-semibold text-white">
-                    {item.title}
-                  </h2>
-                  {item.prize_value_cents != null && (
-                    <span className="pill bg-white/10 text-xs font-semibold text-white">
-                      {formatPrize(item.prize_value_cents)}
-                    </span>
-                  )}
-                </div>
-                <p className="text-sm text-white/70">{truncate(item.description, 110)}</p>
-                <div className="mt-auto flex items-center justify-between text-xs text-white/60">
-                  <span>Ends {new Date(item.end_at).toLocaleString()}</span>
-                  <Link
-                    href={`/sweepstakes/${item.id}`}
-                    className="text-white/90 underline underline-offset-4 hover:text-white"
-                  >
-                    View
-                  </Link>
-                </div>
-              </div>
-            </article>
-          ))}
-        </div>
+        <SweepstakeCards sweepstakes={sweepstakes} />
       )}
     </main>
   );
