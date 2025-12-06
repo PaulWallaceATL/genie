@@ -12,6 +12,43 @@ type Sweepstake = {
   prize_value_cents: number | null;
 };
 
+const demoSweepstakes = (now: Date) => {
+  const nowMs = now.getTime();
+  const days = (d: number) => new Date(nowMs + d * 24 * 60 * 60 * 1000).toISOString();
+  return [
+    {
+      title: "Pharaoh's Gold Chest",
+      description: "Win a gilded bundle inspired by Cairo nights. Coins accepted, AMOE available.",
+      image_url:
+        "https://images.unsplash.com/photo-1505761671935-60b3a7427bad?auto=format&fit=crop&w=1200&q=80",
+      prize_value_cents: 25000,
+      start_at: now.toISOString(),
+      end_at: days(5),
+      is_active: true,
+    },
+    {
+      title: "Blue Genie Getaway",
+      description: "Travel bundle with a touch of sapphire magic. Daily free entry included.",
+      image_url:
+        "https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=1200&q=80",
+      prize_value_cents: 120000,
+      start_at: now.toISOString(),
+      end_at: days(10),
+      is_active: true,
+    },
+    {
+      title: "Lamp of Luck",
+      description: "Limited-edition artisan lamp plus bonus merch. Enter with coins or AMOE.",
+      image_url:
+        "https://images.unsplash.com/photo-1460353581641-37baddab0fa2?auto=format&fit=crop&w=1200&q=80",
+      prize_value_cents: 8500,
+      start_at: now.toISOString(),
+      end_at: days(3),
+      is_active: true,
+    },
+  ];
+};
+
 const currencyFormatter = new Intl.NumberFormat("en-US", {
   style: "currency",
   currency: "USD",
@@ -64,7 +101,40 @@ export default async function SweepstakesListPage() {
       .order("end_at", { ascending: true });
 
     if (error) throw error;
-    sweepstakes = data ?? [];
+
+    if (!data || data.length === 0) {
+      // Seed demo sweepstakes if the table is empty (best-effort).
+      try {
+        const samples = demoSweepstakes(new Date());
+        const { data: existing } = await supabase.from("sweepstakes").select("title");
+        const existingTitles = new Set((existing ?? []).map((s) => s.title));
+        const toInsert = samples.filter((s) => !existingTitles.has(s.title));
+        if (toInsert.length > 0) {
+          await supabase.from("sweepstakes").insert(toInsert);
+        }
+        const { data: retry } = await supabase
+          .from("sweepstakes")
+          .select(
+            "id, title, description, image_url, start_at, end_at, prize_value_cents",
+          )
+          .eq("is_active", true)
+          .lte("start_at", now)
+          .gte("end_at", now)
+          .order("end_at", { ascending: true });
+        sweepstakes = retry ?? [];
+      } catch (seedErr) {
+        loadError =
+          seedErr && typeof seedErr === "object" && "message" in seedErr
+            ? String((seedErr as { message: string }).message)
+            : "Using demo view; unable to seed sweepstakes.";
+        sweepstakes = demoSweepstakes(new Date()).map((s, idx) => ({
+          ...s,
+          id: `demo-${idx}`,
+        }));
+      }
+    } else {
+      sweepstakes = data;
+    }
   } catch (err) {
     loadError =
       err && typeof err === "object" && "message" in err
