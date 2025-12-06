@@ -172,7 +172,6 @@ export function GenieScene() {
       haloMat.dispose();
       particleMaterial.dispose();
       particleGeo.dispose();
-      particles.dispose();
       container.removeChild(renderer.domElement);
     };
   }, []);
