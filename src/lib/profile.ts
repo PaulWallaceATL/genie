@@ -16,81 +16,88 @@ export type Profile = {
 const PROFILE_COLUMNS =
   "id, auth_user_id, email, display_name, country, state, age_verified, coin_balance, created_at";
 
-export async function ensureUserProfile(authUserId: string): Promise<Profile> {
-  const supabase = await getSupabaseServerClient();
+export async function ensureUserProfile(): Promise<{ user: User; profile: Profile } | null> {
+  try {
+    const supabase = await getSupabaseServerClient();
+    const { data: authResult, error: authError } = await supabase.auth.getUser();
 
-  const { data: existingProfile, error: existingError } = await supabase
-    .from("profiles")
-    .select(PROFILE_COLUMNS)
-    .eq("auth_user_id", authUserId)
-    .maybeSingle();
+    if (authError || !authResult?.user) {
+      if (authError?.status !== 401) {
+        console.error("ensureUserProfile auth error", authError);
+      }
+      return null;
+    }
 
-  if (existingProfile) {
-    return existingProfile;
+    const user = authResult.user;
+
+    const { data: existingProfile, error: existingError } = await supabase
+      .from("profiles")
+      .select(PROFILE_COLUMNS)
+      .eq("auth_user_id", user.id)
+      .maybeSingle();
+
+    if (existingError && existingError.code !== "PGRST116") {
+      console.error("ensureUserProfile existing profile error", existingError);
+    }
+
+    if (existingProfile) {
+      return { user, profile: existingProfile as Profile };
+    }
+
+    const { data: newProfile, error: insertError } = await supabase
+      .from("profiles")
+      .insert({
+        auth_user_id: user.id,
+        email: user.email ?? "",
+        coin_balance: 0,
+      })
+      .select(PROFILE_COLUMNS)
+      .single();
+
+    if (insertError || !newProfile) {
+      console.error("ensureUserProfile insert error", insertError);
+      return null;
+    }
+
+    return { user, profile: newProfile as Profile };
+  } catch (err) {
+    console.error("ensureUserProfile unexpected error", err);
+    return null;
   }
-
-  if (existingError && existingError.code !== "PGRST116") {
-    throw existingError;
-  }
-
-  const { data: authResult, error: authError } = await supabase.auth.getUser();
-
-  if (authError || !authResult?.user) {
-    throw new Error("Unable to load authenticated user for profile creation.");
-  }
-
-  if (authResult.user.id !== authUserId) {
-    throw new Error("Authenticated user mismatch while ensuring profile.");
-  }
-
-  const { data: newProfile, error: insertError } = await supabase
-    .from("profiles")
-    .insert({
-      auth_user_id: authUserId,
-      email: authResult.user.email ?? "",
-      coin_balance: 0,
-    })
-    .select(PROFILE_COLUMNS)
-    .single();
-
-  if (insertError || !newProfile) {
-    throw insertError ?? new Error("Failed to create profile.");
-  }
-
-  return newProfile;
 }
 
-export async function getCurrentUserWithProfile(): Promise<{
-  user: User;
-  profile: Profile;
-} | null> {
-  const supabase = await getSupabaseServerClient();
+export async function getCurrentUserWithProfile(): Promise<{ user: User; profile: Profile } | null> {
+  try {
+    const supabase = await getSupabaseServerClient();
+    const { data: authResult, error: authError } = await supabase.auth.getUser();
 
-  const { data: authResult, error: authError } = await supabase.auth.getUser();
+    if (authError || !authResult?.user) {
+      if (authError && authError.status !== 401) {
+        console.error("getCurrentUserWithProfile auth error", authError);
+      }
+      return null;
+    }
 
-  // Supabase returns 401 / "Auth session missing" when no session cookie is present.
-  if (authError && authError.status === 401) {
+    const user = authResult.user;
+
+    const { data: profile, error: profileError } = await supabase
+      .from("profiles")
+      .select(PROFILE_COLUMNS)
+      .eq("auth_user_id", user.id)
+      .maybeSingle();
+
+    if (profileError && profileError.code !== "PGRST116") {
+      console.error("getCurrentUserWithProfile profile error", profileError);
+      return null;
+    }
+
+    if (!profile) {
+      return null;
+    }
+
+    return { user, profile: profile as Profile };
+  } catch (err) {
+    console.error("getCurrentUserWithProfile unexpected error", err);
     return null;
   }
-  if (
-    authError &&
-    typeof authError.message === "string" &&
-    authError.message.toLowerCase().includes("auth session missing")
-  ) {
-    return null;
-  }
-  if (authError) {
-    throw authError;
-  }
-
-  const user = authResult?.user;
-
-  if (!user) {
-    return null;
-  }
-
-  const profile = await ensureUserProfile(user.id);
-
-  return { user, profile };
 }
-
