@@ -3,11 +3,9 @@
 import { redirect } from "next/navigation";
 import { getSupabaseServerClient } from "@/lib/supabaseServer";
 
-function normalizeError(error: unknown) {
-  if (error && typeof error === "object" && "message" in error) {
-    return String((error as { message: string }).message);
-  }
-  return "Something went wrong. Please try again.";
+function toErrorParam(message: string) {
+  const encoded = encodeURIComponent(message);
+  return `/auth?error=${encoded}`;
 }
 
 export async function signInAction(formData: FormData) {
@@ -15,14 +13,14 @@ export async function signInAction(formData: FormData) {
   const password = (formData.get("password") ?? "").toString();
 
   if (!email || !password) {
-    return { error: "Email and password are required." };
+    redirect(toErrorParam("Email and password are required."));
   }
 
   const supabase = await getSupabaseServerClient();
   const { error } = await supabase.auth.signInWithPassword({ email, password });
 
   if (error) {
-    return { error: normalizeError(error) };
+    redirect(toErrorParam(error.message ?? "Unable to sign in."));
   }
 
   redirect("/sweepstakes");
@@ -33,18 +31,18 @@ export async function signUpAction(formData: FormData) {
   const password = (formData.get("password") ?? "").toString();
 
   if (!email || !password) {
-    return { error: "Email and password are required." };
+    redirect(toErrorParam("Email and password are required."));
   }
 
   const supabase = await getSupabaseServerClient();
   const { error } = await supabase.auth.signUp({
     email,
     password,
-    options: { emailRedirectTo: `${process.env.NEXT_PUBLIC_SITE_URL ?? ""}/` },
+    options: { emailRedirectTo: process.env.NEXT_PUBLIC_SITE_URL ?? undefined },
   });
 
   if (error) {
-    return { error: normalizeError(error) };
+    redirect(toErrorParam(error.message ?? "Unable to sign up."));
   }
 
   redirect("/sweepstakes");
