@@ -43,7 +43,8 @@ export default async function AdminEntriesPage() {
       "id, entry_type, created_at, sweepstake_id, user_id, profiles:profiles(email), sweepstakes(title)",
     )
     .order("created_at", { ascending: false })
-    .limit(200);
+    .limit(200)
+    .returns<EntryWithRelations[]>();
 
   if (error) {
     throw error;
@@ -81,7 +82,7 @@ export default async function AdminEntriesPage() {
                 </tr>
               </thead>
               <tbody className="divide-y divide-white/5 text-white/80">
-                {(entries as EntryWithRelations[]).map((entry) => (
+                {entries.map((entry) => (
                   <tr key={entry.id}>
                     <td className="px-3 py-2">
                       <div className="flex flex-col">
