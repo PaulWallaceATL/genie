@@ -2,8 +2,8 @@
   <defs>
     <linearGradient id="grad" x1="10" y1="14" x2="112" y2="106" gradientUnits="userSpaceOnUse">
       <stop stop-color="#F7C552"/>
-      <stop offset="0.45" stop-color="#D7A8FF"/>
-      <stop offset="1" stop-color="#5C2BBA"/>
+      <stop offset="0.45" stop-color="#4FA3FF"/>
+      <stop offset="1" stop-color="#1B3760"/>
     </linearGradient>
     <filter id="shadow" x="-80%" y="-80%" width="260%" height="260%" color-interpolation-filters="sRGB">
       <feGaussianBlur in="SourceGraphic" stdDeviation="5" result="blur"/>

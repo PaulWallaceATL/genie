@@ -16,8 +16,8 @@ export function LogoMark({ size = 28, className }: LogoMarkProps) {
       <defs>
         <linearGradient id="lampGradient" x1="6" y1="10" x2="58" y2="52" gradientUnits="userSpaceOnUse">
           <stop stopColor="#F7C552" />
-          <stop offset="0.4" stopColor="#D7A8FF" />
-          <stop offset="1" stopColor="#5C2BBA" />
+          <stop offset="0.4" stopColor="#4FA3FF" />
+          <stop offset="1" stopColor="#1B3760" />
         </linearGradient>
         <filter id="glow" x="-50%" y="-50%" width="200%" height="200%" colorInterpolationFilters="sRGB">
           <feGaussianBlur stdDeviation="3" result="blur" />

@@ -7,8 +7,8 @@
     </linearGradient>
     <linearGradient id="ring" x1="260" y1="150" x2="880" y2="520" gradientUnits="userSpaceOnUse">
       <stop stop-color="#F7C552"/>
-      <stop offset="0.45" stop-color="#D7A8FF"/>
-      <stop offset="1" stop-color="#5C2BBA"/>
+      <stop offset="0.45" stop-color="#4FA3FF"/>
+      <stop offset="1" stop-color="#1B3760"/>
     </linearGradient>
     <radialGradient id="glow" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(320 180) rotate(90) scale(260 320)">
       <stop stop-color="#F7C552" stop-opacity="0.32"/>
