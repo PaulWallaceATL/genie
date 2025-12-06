@@ -10,7 +10,7 @@ type ActionState = { status: "idle" | "success" | "error"; message?: string };
 const initialState: ActionState = { status: "idle" };
 
 type Props = {
-  email: string | null;
+  email: string | null | undefined;
   balance: number;
 };
 
@@ -19,7 +19,8 @@ export function ProfileHero({ email, balance }: Props) {
   const [adState, adAction] = useFormState(watchAdDemo, initialState);
 
   const displayBalance = useAnimatedNumber(balance);
-  const avatarLetter = useMemo(() => (email?.[0]?.toUpperCase() ?? "G"), [email]);
+  const safeEmail = email ?? "";
+  const avatarLetter = useMemo(() => (safeEmail[0]?.toUpperCase() ?? "G"), [safeEmail]);
 
   const feedback = purchaseState.status !== "idle" ? purchaseState : adState;
 
@@ -38,7 +39,7 @@ export function ProfileHero({ email, balance }: Props) {
           </div>
           <div>
             <p className="text-sm text-white/60">Signed in as</p>
-            <p className="text-base font-semibold text-white">{email ?? "Genie user"}</p>
+            <p className="text-base font-semibold text-white">{safeEmail || "Genie user"}</p>
           </div>
         </div>
 
