@@ -13,9 +13,9 @@ export default function Home() {
     <main className="mx-auto flex min-h-screen max-w-6xl flex-col gap-14 px-6 py-16">
       <section className="hero-grid relative grid gap-10 overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-br from-white/5 via-white/0 to-white/5 p-10 md:grid-cols-2">
         <div className="absolute inset-0">
-          <div className="absolute left-10 top-10 h-32 w-32 rounded-full bg-[#5dd8ff]/25 blur-[90px]" />
-          <div className="absolute right-0 top-0 h-40 w-40 rounded-full bg-[#a78bfa]/20 blur-[120px]" />
-          <div className="absolute bottom-0 right-20 h-24 w-72 rounded-full bg-[#f8d477]/20 blur-[120px]" />
+          <div className="absolute left-10 top-10 h-32 w-32 rounded-full bg-[#f7c552]/24 blur-[90px]" />
+          <div className="absolute right-0 top-0 h-40 w-40 rounded-full bg-[#8c52ff]/22 blur-[120px]" />
+          <div className="absolute bottom-0 right-20 h-24 w-72 rounded-full bg-[#c49bff]/20 blur-[120px]" />
           <div className="absolute inset-0 grid-dots" />
         </div>
 
@@ -70,7 +70,7 @@ export default function Home() {
               <span className="pill bg-white/10 text-[11px]">Live</span>
             </div>
             <div className="mt-3 h-1.5 w-full overflow-hidden rounded-full bg-white/10">
-              <div className="h-full w-2/3 rounded-full bg-gradient-to-r from-[#5dd8ff] via-[#a78bfa] to-[#f8d477]" />
+              <div className="h-full w-2/3 rounded-full bg-gradient-to-r from-[#8c52ff] via-[#c49bff] to-[#f7c552]" />
             </div>
           </div>
         </div>

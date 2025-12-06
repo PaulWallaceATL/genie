@@ -1,18 +1,18 @@
 @import "tailwindcss";
 
 :root {
-  --bg: #050811;
-  --bg-secondary: #0b1021;
+  --bg: #0a0616;
+  --bg-secondary: #140b2a;
   --surface: rgba(255, 255, 255, 0.05);
   --card: rgba(255, 255, 255, 0.06);
-  --border: rgba(255, 255, 255, 0.09);
-  --muted: #9aa7c7;
-  --text: #e5edff;
-  --accent: #a78bfa;
-  --accent-2: #5dd8ff;
-  --accent-3: #f8d477;
+  --border: rgba(255, 255, 255, 0.12);
+  --muted: #c8b7e8;
+  --text: #f7f3ff;
+  --accent: #c49bff;
+  --accent-2: #f7c552;
+  --accent-3: #8c52ff;
   --danger: #ff6b8a;
-  --glow: rgba(93, 216, 255, 0.45);
+  --glow: rgba(247, 197, 82, 0.4);
   --font-sans: var(--font-jakarta);
   --font-display: var(--font-grotesk);
 }
@@ -30,9 +30,9 @@
 
 body {
   min-height: 100vh;
-  background: radial-gradient(circle at 20% 20%, rgba(93, 216, 255, 0.12), transparent 30%),
-    radial-gradient(circle at 80% 0%, rgba(167, 139, 250, 0.18), transparent 26%),
-    linear-gradient(135deg, #050811, #0a0f1f 40%, #05070f);
+  background: radial-gradient(circle at 12% 18%, rgba(247, 197, 82, 0.18), transparent 30%),
+    radial-gradient(circle at 78% 6%, rgba(140, 82, 255, 0.18), transparent 28%),
+    linear-gradient(135deg, #0a0616, #120a24 45%, #0a0514);
   color: var(--text);
   font-family: var(--font-jakarta), system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
     sans-serif;
@@ -40,14 +40,14 @@ body {
 }
 
 a {
-  color: var(--accent);
+  color: var(--accent-2);
 }
 
 .shell {
   border: 1px solid var(--border);
   background: linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.01));
   border-radius: 20px;
-  box-shadow: 0 15px 60px rgba(0, 0, 0, 0.4), 0 0 40px rgba(93, 216, 255, 0.07);
+  box-shadow: 0 15px 60px rgba(0, 0, 0, 0.4), 0 0 40px rgba(196, 155, 255, 0.12);
   backdrop-filter: blur(16px);
 }
 
@@ -61,8 +61,8 @@ a {
 .pill {
   border-radius: 999px;
   padding: 0.45rem 0.9rem;
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  background: linear-gradient(120deg, rgba(140, 82, 255, 0.14), rgba(247, 197, 82, 0.12));
   color: var(--text);
   display: inline-flex;
   align-items: center;
@@ -74,19 +74,19 @@ a {
 .btn-primary {
   border-radius: 999px;
   padding: 0.85rem 1.4rem;
-  background: linear-gradient(120deg, #5dd8ff, #a78bfa, #f8d477);
+  background: linear-gradient(120deg, #8c52ff, #c49bff, #f7c552);
   background-size: 220% 220%;
-  color: #05070f;
+  color: #160b1f;
   font-weight: 700;
   border: none;
-  box-shadow: 0 15px 40px rgba(93, 216, 255, 0.35), 0 0 0 1px rgba(255, 255, 255, 0.12);
+  box-shadow: 0 15px 40px rgba(247, 197, 82, 0.3), 0 0 0 1px rgba(255, 255, 255, 0.12);
   transition: transform 180ms ease, box-shadow 180ms ease, background-position 800ms ease;
 }
 
 .btn-primary:hover {
   transform: translateY(-1px) scale(1.01);
   background-position: 80% 20%;
-  box-shadow: 0 18px 40px rgba(167, 139, 250, 0.35), 0 0 0 1px rgba(255, 255, 255, 0.16);
+  box-shadow: 0 18px 40px rgba(196, 155, 255, 0.32), 0 0 0 1px rgba(255, 255, 255, 0.16);
 }
 
 .btn-ghost {
@@ -94,7 +94,7 @@ a {
   padding: 0.85rem 1.2rem;
   border: 1px solid var(--border);
   color: var(--text);
-  background: rgba(255, 255, 255, 0.04);
+  background: rgba(255, 255, 255, 0.06);
   transition: border-color 160ms ease, background 160ms ease, transform 160ms ease;
 }
 
@@ -110,18 +110,18 @@ a {
   gap: 0.35rem;
   padding: 0.4rem 0.75rem;
   border-radius: 999px;
-  background: rgba(93, 216, 255, 0.12);
-  border: 1px solid rgba(93, 216, 255, 0.2);
-  color: #b6e7ff;
+  background: linear-gradient(120deg, rgba(247, 197, 82, 0.18), rgba(140, 82, 255, 0.2));
+  border: 1px solid rgba(247, 197, 82, 0.35);
+  color: #ffe9b0;
   font-size: 0.8rem;
   font-weight: 600;
 }
 
 .nav-glass {
   backdrop-filter: blur(16px);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-  background: radial-gradient(ellipse at top left, rgba(167, 139, 250, 0.08), transparent 35%),
-    rgba(4, 7, 15, 0.78);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+  background: radial-gradient(ellipse at top left, rgba(196, 155, 255, 0.12), transparent 35%),
+    rgba(10, 6, 22, 0.84);
 }
 
 .hero-grid {
@@ -138,9 +138,9 @@ a {
 }
 
 .beam {
-  background: linear-gradient(180deg, rgba(93, 216, 255, 0.22), transparent);
-  border: 1px solid rgba(93, 216, 255, 0.4);
-  box-shadow: 0 12px 60px rgba(93, 216, 255, 0.26);
+  background: linear-gradient(180deg, rgba(247, 197, 82, 0.28), transparent);
+  border: 1px solid rgba(247, 197, 82, 0.42);
+  box-shadow: 0 12px 60px rgba(247, 197, 82, 0.32);
 }
 
 .floating {
@@ -158,7 +158,7 @@ a {
 }
 
 .glow {
-  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.08), 0 20px 80px rgba(167, 139, 250, 0.28);
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.08), 0 20px 80px rgba(247, 197, 82, 0.32);
 }
 
 .grid-dots {
@@ -173,9 +173,9 @@ a {
   z-index: 60;
   display: grid;
   place-items: center;
-  background: radial-gradient(circle at 20% 20%, rgba(167, 139, 250, 0.28), transparent 32%),
-    radial-gradient(circle at 80% 80%, rgba(93, 216, 255, 0.26), transparent 28%),
-    #050811e6;
+  background: radial-gradient(circle at 20% 20%, rgba(196, 155, 255, 0.32), transparent 32%),
+    radial-gradient(circle at 80% 80%, rgba(247, 197, 82, 0.28), transparent 30%),
+    #0a0616e6;
   backdrop-filter: blur(8px);
   transition: opacity 260ms ease, visibility 260ms ease;
 }
@@ -189,10 +189,10 @@ a {
   width: 82px;
   height: 82px;
   border-radius: 50%;
-  background: conic-gradient(from 45deg, #5dd8ff, #a78bfa, #f8d477, #5dd8ff);
+  background: conic-gradient(from 45deg, #8c52ff, #c49bff, #f7c552, #8c52ff);
   position: relative;
   animation: spin 1.5s linear infinite;
-  box-shadow: 0 0 50px rgba(93, 216, 255, 0.4);
+  box-shadow: 0 0 50px rgba(247, 197, 82, 0.38);
 }
 
 .loader-orb::after {
@@ -219,9 +219,9 @@ a {
   height: 100%;
   border-radius: 16px;
   border: 1px solid rgba(255, 255, 255, 0.08);
-  background: radial-gradient(circle at 30% 20%, rgba(93, 216, 255, 0.2), transparent 45%),
-    radial-gradient(circle at 80% 60%, rgba(167, 139, 250, 0.18), transparent 40%),
-    #030712;
+  background: radial-gradient(circle at 30% 20%, rgba(140, 82, 255, 0.22), transparent 45%),
+    radial-gradient(circle at 80% 60%, rgba(247, 197, 82, 0.2), transparent 40%),
+    #0a0616;
 }
 
 input,

@@ -112,9 +112,9 @@ export default async function RootLayout({
         </header>
         <div className="relative overflow-hidden">
           <div className="pointer-events-none absolute inset-0 opacity-60">
-            <div className="absolute -left-24 top-[-10%] h-64 w-64 rounded-full bg-[#a78bfa]/25 blur-[120px]" />
-            <div className="absolute -right-10 top-10 h-56 w-56 rounded-full bg-[#5dd8ff]/20 blur-[120px]" />
-            <div className="absolute bottom-0 left-1/2 h-52 w-72 -translate-x-1/2 rounded-full bg-[#f8d477]/12 blur-[120px]" />
+            <div className="absolute -left-24 top-[-10%] h-64 w-64 rounded-full bg-[#8c52ff]/28 blur-[120px]" />
+            <div className="absolute -right-10 top-10 h-56 w-56 rounded-full bg-[#f7c552]/18 blur-[120px]" />
+            <div className="absolute bottom-0 left-1/2 h-52 w-72 -translate-x-1/2 rounded-full bg-[#c49bff]/18 blur-[140px]" />
           </div>
           {children}
         </div>
