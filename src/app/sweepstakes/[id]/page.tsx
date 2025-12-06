@@ -28,7 +28,7 @@ export default async function SweepstakesDetailPage({
 }: {
   params: { id: string };
 }) {
-  const supabase = getSupabaseServerClient();
+  const supabase = await getSupabaseServerClient();
   const now = new Date().toISOString();
 
   const { data, error } = await supabase

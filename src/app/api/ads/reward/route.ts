@@ -40,7 +40,7 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Coins must be a positive number" }, { status: 400 });
   }
 
-  const supabase = getSupabaseServerClient();
+  const supabase = await getSupabaseServerClient();
 
   const { data: existingReward, error: existingError } = await supabase
     .from("ad_rewards")

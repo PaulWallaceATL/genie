@@ -28,7 +28,7 @@ function truncate(text: string | null, length = 140) {
 }
 
 export default async function SweepstakesListPage() {
-  const supabase = getSupabaseServerClient();
+  const supabase = await getSupabaseServerClient();
   const now = new Date().toISOString();
 
   const { data, error } = await supabase

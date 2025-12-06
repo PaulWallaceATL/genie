@@ -39,7 +39,7 @@ export async function POST(request: Request) {
   }
 
   const { user, profile } = userWithProfile;
-  const supabase = getSupabaseServerClient();
+  const supabase = await getSupabaseServerClient();
   const pkg = PACKAGES[packageId];
 
   const { error: orderError } = await supabase.from("orders").insert({

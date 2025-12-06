@@ -17,7 +17,7 @@ const PROFILE_COLUMNS =
   "id, auth_user_id, email, display_name, country, state, age_verified, coin_balance, created_at";
 
 export async function ensureUserProfile(authUserId: string): Promise<Profile> {
-  const supabase = getSupabaseServerClient();
+  const supabase = await getSupabaseServerClient();
 
   const { data: existingProfile, error: existingError } = await supabase
     .from("profiles")
@@ -64,7 +64,7 @@ export async function getCurrentUserWithProfile(): Promise<{
   user: User;
   profile: Profile;
 } | null> {
-  const supabase = getSupabaseServerClient();
+  const supabase = await getSupabaseServerClient();
 
   const { data: authResult, error: authError } = await supabase.auth.getUser();
 

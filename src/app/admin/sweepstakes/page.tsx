@@ -74,7 +74,7 @@ async function createSweepstake(formData: FormData) {
 
 export default async function AdminSweepstakesPage() {
   const userWithProfile = await getCurrentUserWithProfile();
-  const supabase = getSupabaseServerClient();
+  const supabase = await getSupabaseServerClient();
 
   if (!userWithProfile || !isAdmin(userWithProfile.user.email)) {
     return (
