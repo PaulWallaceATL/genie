@@ -55,61 +55,68 @@ export default async function SweepstakesListPage() {
   }
 
   return (
-    <main className="mx-auto flex min-h-screen max-w-6xl flex-col gap-6 px-6 py-10">
-      <div className="flex flex-col gap-2">
-        <h1 className="text-3xl font-bold text-zinc-900">Active Sweepstakes</h1>
-        <p className="text-sm text-zinc-600">
-          Enter with Genie Coins or use the free daily entry for each sweepstake
-          (AMOE).
-        </p>
+    <main className="mx-auto flex min-h-screen max-w-6xl flex-col gap-8 px-6 py-12">
+      <div className="flex flex-col gap-3 rounded-3xl border border-white/10 bg-white/5 p-8">
+        <p className="badge w-fit">Live draws</p>
+        <div className="flex flex-col gap-2 md:flex-row md:items-end md:justify-between">
+          <div>
+            <h1 className="text-3xl font-semibold text-white">Active Sweepstakes</h1>
+            <p className="text-sm text-white/70">
+              Enter with Genie Coins or claim the daily free Alternate Method of Entry.
+            </p>
+          </div>
+          <Link href="/auth" className="btn-ghost text-sm">
+            Check my balance
+          </Link>
+        </div>
       </div>
 
       {loadError ? (
-        <div className="rounded-lg border border-red-200 bg-red-50 p-6 text-sm text-red-700">
+        <div className="card border border-red-400/40 bg-red-500/10 p-6 text-sm text-red-100">
           {loadError}
         </div>
       ) : sweepstakes.length === 0 ? (
-        <div className="rounded-lg border border-dashed border-zinc-300 bg-white p-6 text-sm text-zinc-600">
-          No active sweepstakes right now. Check back soon!
+        <div className="card border border-dashed border-white/20 bg-white/5 p-6 text-sm text-white/70">
+          No active sweepstakes right now. Check back soon.
         </div>
       ) : (
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {sweepstakes.map((item) => (
             <article
               key={item.id}
-              className="flex flex-col gap-3 rounded-xl border border-zinc-200 bg-white p-4 shadow-sm"
+              className="card flex flex-col gap-3 border border-white/10 p-5 transition duration-200 hover:-translate-y-1 hover:border-white/20"
             >
               {item.image_url ? (
                 // eslint-disable-next-line @next/next/no-img-element
                 <img
                   src={item.image_url}
                   alt={item.title}
-                  className="h-40 w-full rounded-lg object-cover"
+                  className="h-40 w-full rounded-lg object-cover ring-1 ring-white/10"
                 />
               ) : (
-                <div className="flex h-40 w-full items-center justify-center rounded-lg bg-zinc-100 text-sm text-zinc-500">
-                  No image
+                <div className="flex h-40 w-full items-center justify-center rounded-lg border border-dashed border-white/15 bg-white/5 text-sm text-white/60">
+                  Image coming soon
                 </div>
               )}
               <div className="flex flex-1 flex-col gap-2">
                 <div className="flex items-start justify-between gap-2">
-                  <h2 className="text-lg font-semibold text-zinc-900">
+                  <h2 className="text-lg font-semibold text-white">
                     {item.title}
                   </h2>
                   {item.prize_value_cents != null && (
-                    <span className="rounded-full bg-indigo-50 px-3 py-1 text-xs font-semibold text-indigo-700">
+                    <span className="pill bg-white/10 text-xs font-semibold text-white">
                       {formatPrize(item.prize_value_cents)}
                     </span>
                   )}
                 </div>
-                <p className="text-sm text-zinc-600">
+                <p className="text-sm text-white/70">
                   {truncate(item.description, 110)}
                 </p>
-                <div className="mt-auto flex items-center justify-between text-xs text-zinc-500">
+                <div className="mt-auto flex items-center justify-between text-xs text-white/60">
                   <span>Ends {new Date(item.end_at).toLocaleString()}</span>
                   <Link
                     href={`/sweepstakes/${item.id}`}
-                    className="text-indigo-600 hover:text-indigo-700"
+                    className="text-white/90 underline underline-offset-4 hover:text-white"
                   >
                     View
                   </Link>

@@ -1,13 +1,22 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist_Mono, Plus_Jakarta_Sans, Space_Grotesk } from "next/font/google";
 import "./globals.css";
 import { getCurrentUserWithProfile } from "@/lib/profile";
 import { signOutAction } from "./auth/actions";
+import { LogoMark } from "./components/LogoMark";
+import { PageLoader } from "./components/PageLoader";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const jakarta = Plus_Jakarta_Sans({
+  variable: "--font-jakarta",
   subsets: ["latin"],
+  weight: ["400", "500", "600", "700", "800"],
+});
+
+const grotesk = Space_Grotesk({
+  variable: "--font-grotesk",
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
 });
 
 const geistMono = Geist_Mono({
@@ -15,9 +24,39 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+const title = "Genie Sweepstakes";
+const description =
+  "Summon luck with Genie Coins. Enter verified sweepstakes with paid, earned, or free AMOE entries.";
+
 export const metadata: Metadata = {
-  title: "Genie Sweepstakes",
-  description: "Enter sweepstakes with Genie Coins.",
+  title,
+  description,
+  metadataBase: new URL("https://genie-sweepstakes.example"),
+  openGraph: {
+    title,
+    description,
+    url: "https://genie-sweepstakes.example",
+    siteName: "Genie Sweepstakes",
+    images: [
+      {
+        url: "/og-image.svg",
+        width: 1200,
+        height: 630,
+        alt: "Genie Sweepstakes hero artwork",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title,
+    description,
+    images: ["/og-image.svg"],
+  },
+  icons: {
+    icon: "/icon.svg",
+    shortcut: "/favicon.ico",
+    apple: "/icon.svg",
+  },
 };
 
 export default async function RootLayout({
@@ -29,49 +68,56 @@ export default async function RootLayout({
 
   return (
     <html lang="en">
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased bg-zinc-50 text-zinc-900`}>
-        <header className="border-b border-zinc-200 bg-white/80 backdrop-blur">
+      <body
+        className={`${jakarta.variable} ${grotesk.variable} ${geistMono.variable} antialiased relative`}
+      >
+        <PageLoader />
+        <header className="nav-glass sticky top-0 z-40">
           <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
-            <div className="flex items-center gap-3">
-              <Link href="/" className="text-lg font-semibold text-zinc-900">
-                Genie Sweepstakes
+            <Link href="/" className="flex items-center gap-3">
+              <span className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-white/5 ring-1 ring-white/10">
+                <LogoMark size={28} />
+              </span>
+              <div className="flex flex-col leading-tight">
+                <span className="text-base font-semibold text-white">{title}</span>
+                <span className="text-xs text-white/60">Luck, verified.</span>
+              </div>
+            </Link>
+            <nav className="flex items-center gap-3 text-sm text-white/80">
+              <Link href="/sweepstakes" className="pill hover:border-white/30 hover:bg-white/10">
+                Sweepstakes
               </Link>
-              <nav className="flex items-center gap-4 text-sm text-zinc-700">
-                <Link href="/sweepstakes" className="hover:text-indigo-600">
-                  Sweepstakes
-                </Link>
-                <Link href="/admin/sweepstakes" className="hover:text-indigo-600">
-                  Admin
-                </Link>
-              </nav>
-            </div>
-            <div className="flex items-center gap-3 text-sm">
+              <Link href="/admin/sweepstakes" className="pill hover:border-white/30 hover:bg-white/10">
+                Admin
+              </Link>
               {userWithProfile ? (
-                <>
-                  <span className="rounded-full bg-zinc-100 px-3 py-1 text-zinc-700">
-                    {userWithProfile.user.email}
-                  </span>
+                <div className="flex items-center gap-3">
+                  <span className="pill bg-white/5 text-white/80">{userWithProfile.user.email}</span>
                   <form action={signOutAction}>
                     <button
                       type="submit"
-                      className="rounded-full border border-zinc-200 px-3 py-1 font-semibold text-zinc-800 hover:border-zinc-300 hover:bg-zinc-50"
+                      className="btn-ghost px-4 py-2 text-sm"
                     >
                       Sign out
                     </button>
                   </form>
-                </>
+                </div>
               ) : (
-                <Link
-                  href="/auth"
-                  className="rounded-full bg-indigo-600 px-4 py-2 font-semibold text-white shadow hover:bg-indigo-700"
-                >
+                <Link href="/auth" className="btn-primary text-sm px-4 py-2">
                   Sign in / Sign up
                 </Link>
               )}
-            </div>
+            </nav>
           </div>
         </header>
-        {children}
+        <div className="relative overflow-hidden">
+          <div className="pointer-events-none absolute inset-0 opacity-60">
+            <div className="absolute -left-24 top-[-10%] h-64 w-64 rounded-full bg-[#a78bfa]/25 blur-[120px]" />
+            <div className="absolute -right-10 top-10 h-56 w-56 rounded-full bg-[#5dd8ff]/20 blur-[120px]" />
+            <div className="absolute bottom-0 left-1/2 h-52 w-72 -translate-x-1/2 rounded-full bg-[#f8d477]/12 blur-[120px]" />
+          </div>
+          {children}
+        </div>
       </body>
     </html>
   );
