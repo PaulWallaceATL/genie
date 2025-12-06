@@ -114,6 +114,46 @@ async function seedSampleSweepstakes() {
       end_at: new Date(now.getTime() + 3 * 24 * 60 * 60 * 1000).toISOString(),
       is_active: true,
     },
+    {
+      title: "Sands of Fortune",
+      description: "Desert experience pack with premium gear and a private guide.",
+      image_url:
+        "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=900&q=80",
+      prize_value_cents: 68000,
+      start_at: new Date(now).toISOString(),
+      end_at: new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000).toISOString(),
+      is_active: true,
+    },
+    {
+      title: "Oasis Spa Retreat",
+      description: "Two-night spa stay with gold-infused treatments and blue oasis pools.",
+      image_url:
+        "https://images.unsplash.com/photo-1501117716987-c8e1ecb210af?auto=format&fit=crop&w=900&q=80",
+      prize_value_cents: 42000,
+      start_at: new Date(now).toISOString(),
+      end_at: new Date(now.getTime() + 9 * 24 * 60 * 60 * 1000).toISOString(),
+      is_active: true,
+    },
+    {
+      title: "Midnight Bazaar Bundle",
+      description: "Handmade crafts, spices, and textiles curated from local bazaars.",
+      image_url:
+        "https://images.unsplash.com/photo-1504805572947-34fad45aed93?auto=format&fit=crop&w=900&q=80",
+      prize_value_cents: 12500,
+      start_at: new Date(now).toISOString(),
+      end_at: new Date(now.getTime() + 4 * 24 * 60 * 60 * 1000).toISOString(),
+      is_active: true,
+    },
+    {
+      title: "Sapphire Tech Drop",
+      description: "Latest gadgets in sapphire blue, plus bonus coins for next entries.",
+      image_url:
+        "https://images.unsplash.com/photo-1545239351-1141bd82e8a6?auto=format&fit=crop&w=900&q=80",
+      prize_value_cents: 54000,
+      start_at: new Date(now).toISOString(),
+      end_at: new Date(now.getTime() + 6 * 24 * 60 * 60 * 1000).toISOString(),
+      is_active: true,
+    },
   ];
 
   // Avoid duplicating by title.

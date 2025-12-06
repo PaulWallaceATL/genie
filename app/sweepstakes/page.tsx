@@ -56,18 +56,29 @@ export default async function SweepstakesListPage() {
 
   return (
     <main className="mx-auto flex min-h-screen max-w-6xl flex-col gap-8 px-6 py-12">
-      <div className="flex flex-col gap-3 rounded-3xl border border-white/10 bg-white/5 p-8">
-        <p className="badge w-fit">Live draws</p>
-        <div className="flex flex-col gap-2 md:flex-row md:items-end md:justify-between">
-          <div>
+      <div className="hero-grid relative overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-r from-[#0b1a34] via-[#0a1224] to-[#0b182e] p-8">
+        <div className="absolute inset-0 pointer-events-none">
+          <div className="absolute left-8 top-6 h-32 w-32 rounded-full bg-[#f7c552]/20 blur-[90px]" />
+          <div className="absolute right-4 top-0 h-40 w-40 rounded-full bg-[#2f6fde]/22 blur-[110px]" />
+          <div className="absolute bottom-0 left-1/2 h-32 w-80 -translate-x-1/2 rounded-full bg-[#0b1a34]/60 blur-[120px]" />
+          <div className="absolute inset-0 grid-dots opacity-40" />
+        </div>
+        <div className="relative flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+          <div className="space-y-2">
+            <p className="badge w-fit">Live draws</p>
             <h1 className="text-3xl font-semibold text-white">Active Sweepstakes</h1>
             <p className="text-sm text-white/70">
-              Enter with Genie Coins or claim the daily free Alternate Method of Entry.
+              Enter with Genie Coins or claim the daily free Alternate Method of Entry (AMOE).
             </p>
           </div>
-          <Link href="/auth" className="btn-ghost text-sm">
-            Check my balance
-          </Link>
+          <div className="flex gap-3">
+            <Link href="/auth" className="btn-ghost text-sm">
+              Check my balance
+            </Link>
+            <Link href="/account" className="pill text-sm">
+              My entries
+            </Link>
+          </div>
         </div>
       </div>
 
@@ -84,7 +95,7 @@ export default async function SweepstakesListPage() {
           {sweepstakes.map((item) => (
             <article
               key={item.id}
-              className="card flex flex-col gap-3 border border-white/10 p-5 transition duration-200 hover:-translate-y-1 hover:border-white/20"
+              className="card flex flex-col gap-3 border border-white/10 p-5 transition duration-200 hover:-translate-y-1 hover:border-white/20 hover:shadow-xl"
             >
               {item.image_url ? (
                 // eslint-disable-next-line @next/next/no-img-element
@@ -109,9 +120,7 @@ export default async function SweepstakesListPage() {
                     </span>
                   )}
                 </div>
-                <p className="text-sm text-white/70">
-                  {truncate(item.description, 110)}
-                </p>
+                <p className="text-sm text-white/70">{truncate(item.description, 110)}</p>
                 <div className="mt-auto flex items-center justify-between text-xs text-white/60">
                   <span>Ends {new Date(item.end_at).toLocaleString()}</span>
                   <Link
