@@ -68,6 +68,17 @@ export async function getCurrentUserWithProfile(): Promise<{
 
   const { data: authResult, error: authError } = await supabase.auth.getUser();
 
+  // Supabase returns 401 / "Auth session missing" when no session cookie is present.
+  if (authError && authError.status === 401) {
+    return null;
+  }
+  if (
+    authError &&
+    typeof authError.message === "string" &&
+    authError.message.toLowerCase().includes("auth session missing")
+  ) {
+    return null;
+  }
   if (authError) {
     throw authError;
   }
