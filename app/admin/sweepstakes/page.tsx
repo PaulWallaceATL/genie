@@ -176,6 +176,11 @@ async function seedSampleSweepstakes() {
 }
 
 type ActionState = { status: "idle" | "success" | "error"; message?: string };
+type EntryWithEmail = {
+  id: string;
+  user_id: string;
+  profiles: { email: string | null } | null;
+};
 
 async function closeSweepstake(formData: FormData): Promise<ActionState> {
   "use server";
@@ -220,7 +225,8 @@ async function selectWinner(formData: FormData): Promise<ActionState> {
   const { data: entries, error } = await supabase
     .from("entries")
     .select("id, user_id, profiles:profiles(email)")
-    .eq("sweepstake_id", sweepstakeId);
+    .eq("sweepstake_id", sweepstakeId)
+    .returns<EntryWithEmail[]>();
 
   if (error) {
     return { status: "error", message: error.message ?? "Failed to load entries." };
