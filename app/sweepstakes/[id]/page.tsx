@@ -126,11 +126,11 @@ export default async function SweepstakesDetailPage({
         </div>
 
         <div className="relative overflow-hidden rounded-t-3xl">
-          {sweepstake.image_url ? (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img
-              src={sweepstake.image_url}
-              alt={sweepstake.title}
+        {sweepstake.image_url ? (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            src={sweepstake.image_url}
+            alt={sweepstake.title}
               className="h-72 w-full object-cover"
             />
           ) : (
