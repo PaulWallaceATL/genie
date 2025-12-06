@@ -2,7 +2,7 @@ import { revalidatePath } from "next/cache";
 import { getCurrentUserWithProfile } from "@/lib/profile";
 import { getSupabaseServerClient } from "@/lib/supabaseServer";
 import { SweepstakeAdminTable } from "./SweepstakeAdminTable";
-import { SectionHeader } from "../components/ui/SectionHeader";
+import { SectionHeader } from "../../components/ui/SectionHeader";
 
 const ADMIN_EMAILS = ["paul@antimatterai.com"];
 
