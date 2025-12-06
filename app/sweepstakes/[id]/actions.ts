@@ -5,6 +5,15 @@ import { getCurrentUserWithProfile } from "@/lib/profile";
 import { getSupabaseServerClient } from "@/lib/supabaseServer";
 
 export type ActionState = { status: "idle" | "success" | "error"; message?: string };
+type Sweepstake = {
+  id: string;
+  title: string;
+  description: string | null;
+  image_url: string | null;
+  start_at: string;
+  end_at: string;
+  prize_value_cents: number | null;
+};
 
 const success = (message: string): ActionState => ({ status: "success", message });
 const failure = (message: string): ActionState => ({ status: "error", message });
